@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Objects.Geometry;
+using System.Collections.Generic;
 using System.Linq;
 using TopSolid.Kernel.G.D3.Surfaces;
 using Box = Objects.Geometry.Box;
@@ -7,6 +8,7 @@ using Interval = Objects.Primitive.Interval;
 using Line = Objects.Geometry.Line;
 using Plane = Objects.Geometry.Plane;
 using Point = Objects.Geometry.Point;
+using TsPointList = TopSolid.Kernel.G.D3.PointList;
 using TsBox = TopSolid.Kernel.G.D3.Box;
 //using TsLine = TopSolid.Kernel.DB.D2.L;
 using TsInterval = TopSolid.Kernel.G.D1.Generic.Interval<double>;
@@ -16,6 +18,8 @@ using TsPoint = TopSolid.Kernel.G.D3.Point;
 using TsUVector = TopSolid.Kernel.G.D3.UnitVector;
 using TsVector = TopSolid.Kernel.G.D3.Vector;
 using Vector = Objects.Geometry.Vector;
+using TsPolylineCurve = TopSolid.Kernel.G.D3.Curves.PolylineCurve;
+
 
 namespace Objects.Converter.TopSolid
 {
@@ -136,8 +140,26 @@ namespace Objects.Converter.TopSolid
             return new TsLineCurve(PointToNative(line.start), PointToNative(line.end));
         }
 
-        // Box
-        public Box BoxToSpeckle(TsBox box, string units = null)
+
+        public TsPolylineCurve PolyLinetoNative(Polyline polyLine)
+        {
+
+            TsPointList _pointsList = new TsPointList();
+
+            foreach (Objects.Geometry.Point p in polyLine.points)
+            {
+                TsPoint _point = PointToNative(p);
+                _pointsList.Add(_point);
+            }
+
+
+            return new TsPolylineCurve(polyLine.closed, _pointsList);
+
+
+        }
+
+            // Box
+            public Box BoxToSpeckle(TsBox box, string units = null)
         {
             try
             {

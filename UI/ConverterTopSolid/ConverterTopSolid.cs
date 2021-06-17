@@ -31,6 +31,8 @@ using TsEntity = TopSolid.Kernel.DB.Entities.Entity;
 using TsLineCurve = TopSolid.Kernel.G.D3.Curves.LineCurve;
 using TsSplineCurve = TopSolid.Kernel.G.D3.Curves.BSplineCurve;
 using TsGeometry = TopSolid.Kernel.G.IGeometry;
+using TsPolylineCurve = TopSolid.Kernel.G.D3.Curves.PolylineCurve;
+using Objects.Geometry;
 
 
 
@@ -90,6 +92,9 @@ namespace Objects.Converter.TopSolid
                 case TsLineCurve o:
                     return LineToSpeckle(o);
 
+                //case TsPolylineCurve o:
+                //    return PolyLinetoSpeckle(o);
+
                 default:
                     throw new NotSupportedException();
             }
@@ -129,7 +134,14 @@ namespace Objects.Converter.TopSolid
 
         public object ConvertToNative(Base @object)
         {
-          throw new NotImplementedException();
+          switch (@object)
+            {
+                case Polyline o:
+                    return PolyLinetoNative(o);
+
+                default:
+                    return null;
+            }
         }
 
         public List<object> ConvertToNative(List<Base> objects)
@@ -161,6 +173,9 @@ namespace Objects.Converter.TopSolid
                 case TsLineCurve o:
                     return LineToSpeckle(o);
 
+                //case TsPolylineCurve o:
+                //    return PolyLineto(o);
+
                 // TODO: using multi type (TsGeometry isn't compatible)
                 //case TsVector o:
                 //    return VectorToSpeckle(o);
@@ -181,6 +196,7 @@ namespace Objects.Converter.TopSolid
                         case TsPlane _:
                         case TsPoint _:
                         case TsLineCurve _:
+                        case TsPolylineCurve _:
                             return true;
 
                         default:
@@ -204,6 +220,8 @@ namespace Objects.Converter.TopSolid
                 case Point _:
                 case Vector _:
                 case Line _:
+                case Polyline _:
+                    return true;
 
                 default:
                     return false;
